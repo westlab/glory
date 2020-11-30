@@ -1,0 +1,21 @@
+
+# credentials
+credentials.json
+token.json
+
+# config
+config.json
+
+# binary
+**/bin/*
+
+# system
+.env
+.DS_STORE
+
+# mysql
+docker/db/data/*
+docker/db/log/
+
+
+!.gitkeep
