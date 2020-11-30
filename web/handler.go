@@ -20,7 +20,6 @@ func init() {
 }
 
 func IndexHandler(ctx *gin.Context) {
-
 	ctx.HTML(http.StatusOK, "index", gin.H{
 		"title":          "glory",
 		"working_groups": *getWorkingGroup(),
@@ -30,10 +29,23 @@ func IndexHandler(ctx *gin.Context) {
 
 func ProgressHandler(ctx *gin.Context) {
 	id := ctx.Param("id")
-	ctx.HTML(http.StatusOK, "progress", gin.H{
-		"title":          id + "の進捗状況",
-		"working_groups": *getWorkingGroup(),
-	})
+	for _, wg := range config.WorkingGroups {
+		if id == wg.Title {
+			th, err := FetchAllHistory(id)
+			if err != nil {
+				log.Printf("fetch history error: %v", err)
+			}
+			chart := NewProgressChart(wg, th)
+			ctx.HTML(http.StatusOK, "progress", gin.H{
+				"title":          wg.Describe,
+				"heading":        wg.Describe + "の進捗状況",
+				"working_groups": *getWorkingGroup(),
+				"chart":          chart,
+			})
+			return
+		}
+	}
+	NotFoundHandler(ctx)
 }
 
 func NotFoundHandler(ctx *gin.Context) {
@@ -59,7 +71,6 @@ func calcDeadlines() *map[string]string {
 			log.Printf("deadline parse error: %v", err)
 			left = "error"
 		} else {
-			//TODO: ちゃんと見直す
 			duration := deadline.Sub(flextime.Now())
 			hours0 := int(duration.Hours())
 			left = strconv.Itoa(hours0 / 24)

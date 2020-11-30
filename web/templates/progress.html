@@ -1,4 +1,64 @@
-{{define "title"}} glory {{end}}
+{{define "title"}} {{.id}} {{end}}
 
 {{define "content"}}
+    <h1>{{.heading}}</h1>
+    <div class="row pt-4">
+        <div class="col-lg-8">
+            <canvas id="progressChart"></canvas>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+            <script>
+                var ctx = document.getElementById("progressChart");
+                var myLineChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: [
+                            {{range $i, $v := .chart.Dates}}{{if ne $i 0}},{{end}}{{$v}}{{end}}
+                        ],
+                        datasets: [
+                            {{range .chart.AuthorDataList}}
+                            {
+                                label: '{{.Name}}',
+                                data: [
+                                    {{range $i, $v := .Data}}{{if ne $i 0}},{{end}}{{$v}}{{end}}
+                                ],
+                                lineTension: 0,
+                                borderColor: "rgba({{.Color.R}},{{.Color.G}},{{.Color.B}},1)",
+                                backgroundColor: "rgba(0,0,0,0)"
+                            },
+                            {{end}}
+                        ],
+                    },
+                    options: {
+                        title: {
+                            display: false,
+                            text: '進捗'
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    suggestedMax: {{.chart.Maxi}},
+                                    suggestedMin: 0,
+                                    stepSize: {{.chart.StepSize}},
+                                    callback: function(value, index, values){
+                                        return  value
+                                    }
+                                }
+                            }],
+                            xAxes: [{
+                                ticks: {
+                                    maxTicksLimit:6
+                                }
+                            }]
+                        },
+                    }
+                });
+            </script>
+        </div>
+        <div class="col-md-auto">
+
+        </div>
+        <div class="col-lg-2">
+            ランキング(TBD)
+        </div>
+    </div>
 {{end}}

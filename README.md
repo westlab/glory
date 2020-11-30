@@ -28,3 +28,7 @@ $ docker-compose up -d
 $ make build
 
 ```
+
+## 画面例
+![進捗グラフ表示例](assets/screenshot.png)
+
