@@ -1,10 +1,11 @@
 package main
 
 import (
+	"log"
+
 	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-gonic/gin"
 	"github.com/westlab/glory/web"
-	"log"
 )
 
 func createRender() multitemplate.Renderer {

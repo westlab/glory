@@ -1,8 +1,6 @@
-
 .PHONY: build
 build:
-	go build -o bin/batch ./cmd/batch
-	go build -o bin/fetchID ./cmd/fetchID
+	go build -o bin/countchars ./cmd
 
 .PHONY: deps
 deps:
