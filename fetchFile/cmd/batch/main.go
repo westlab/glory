@@ -2,8 +2,9 @@ package main
 
 import (
 	"context"
-	fetchFile "glory/fetchDrive"
 	"log"
+
+	"github.com/westlab/glory/fetchFile"
 )
 
 func main() {

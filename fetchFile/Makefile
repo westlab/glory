@@ -6,7 +6,6 @@ build:
 
 .PHONY: deps
 deps:
-	go mod init
 	go mod tidy
 
 .PHONY: test

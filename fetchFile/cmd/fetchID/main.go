@@ -3,7 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
-	fetchFile "glory/fetchDrive"
+
+	"github.com/westlab/glory/fetchFile"
 	"log"
 	"os"
 )

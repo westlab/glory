@@ -5,7 +5,7 @@
       "title": "B4",
       "describe": "B4卒業論文",
       "deadline": "2021-01-26",
-      "dir_id": "xxxxxxxxxxxxxxxxxxxxx",
+      "dir": "/path/to/grad_thesis/directory",
       "members": [
         "sato", "takahashi", "suzuki"
       ]
@@ -14,7 +14,7 @@
       "title": "M2",
       "describe": "M2修士論文",
       "deadline": "2021-01-29",
-      "dir_id": "xxxxxxxxxxxxxxxxxxxxx",
+      "dir": "/path/to/master_thesis/directory",
       "members": [
         "sato", "takahashi", "suzuki"
       ]

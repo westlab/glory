@@ -15,7 +15,7 @@ type WorkingGroup struct {
 	Title    string   `json:"title"`
 	Describe string   `json:"describe"`
 	Deadline string   `json:"Deadline"`
-	DirID    string   `json:"dir_id"`
+	DirID    string   `json:"dir"`
 	Members  []string `json:"members"`
 }
 
