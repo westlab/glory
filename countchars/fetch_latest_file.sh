@@ -14,7 +14,6 @@ elif [ `uname` = "Linux" ]; then # for linux
     SED="sed"
 fi
 
-# docxArray=($(ls -t /home/kenta/drive/PUB-KEIO/B4卒論2019/saito/*.docx 2> /dev/null))
 docxArray=($(ls -t $1/*.docx 2> /dev/null))
 
 if [ "$?" -ne 0 ]; then
