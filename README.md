@@ -19,7 +19,7 @@ glory/          # 設定や、定数などの情報
 ## 使い方
 **各ディレクトリにあるREADMEも参考にしてください**
 
-`config.json`で設定する。設定方法は`confgi_sample.json`を参照。`dir_id`はGoogle DriveにおけるディレクトリのID。
+`config.json`で設定する。設定方法は`confgi_sample.json`を参照。`dir`は論文があるディレクトリを指定する。
 
 `.env`を作り、`MYSQL_ROOT_PASSWORD`, `MYSQL_USER`, `MYSQL_PASSWORD`を設定する。
 
