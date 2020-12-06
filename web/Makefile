@@ -1,7 +1,7 @@
 
 .PHONY: build
 build:
-	go build -o bin/server ./cmd
+	go build -o bin/glory_server ./cmd
 
 .PHONY: deps
 deps:
