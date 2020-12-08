@@ -1,11 +1,6 @@
 package main
 
 import (
-<<<<<<< Updated upstream
-	"log"
-
-=======
->>>>>>> Stashed changes
 	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-gonic/gin"
 	"github.com/westlab/glory/web"

@@ -59,7 +59,11 @@ func NewProgressChart(wg *glory.WorkingGroup, th []*ThesisHistoryJoinAuthor) *Pr
 		for ret.Dates[idx] != toDateStr(t.FetchTime) {
 			idx++
 		}
-		ret.AuthorDataList[authorIdx[t.Name]].Data[idx] = t.CharCount
+    authorNumber, ok := authorIdx[t.Name]
+    if !ok {
+        continue
+    }
+		ret.AuthorDataList[authorNumber].Data[idx] = t.CharCount
 		if t.CharCount > ret.Maxi {
 			ret.Maxi = t.CharCount
 		}
