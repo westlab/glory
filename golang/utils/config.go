@@ -1,4 +1,4 @@
-package glory
+package utils
 
 import (
 	"encoding/json"

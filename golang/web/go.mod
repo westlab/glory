@@ -16,6 +16,7 @@ require (
 	github.com/ugorji/go v1.2.0 // indirect
 	github.com/westlab/glory v0.1.0
 	golang.org/x/crypto v0.0.0-20201124201722-c8d3bf9c5392 // indirect
+	golang.org/x/sys v0.3.0 // indirect
 	google.golang.org/protobuf v1.25.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )

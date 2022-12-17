@@ -1,12 +1,12 @@
-package main
+package web
 
 import (
-	"github.com/gin-contrib/multitemplate"
-	"github.com/gin-gonic/gin"
-	"github.com/westlab/glory/web"
 	"log"
 	"os"
 	"time"
+
+	"github.com/gin-contrib/multitemplate"
+	"github.com/gin-gonic/gin"
 )
 
 func createRender() multitemplate.Renderer {
@@ -17,11 +17,13 @@ func createRender() multitemplate.Renderer {
 	return r
 }
 
-func main() {
+func StartWebApp() {
+
 	Port := os.Getenv("GLORY_PORT")
 	if Port == "" {
 		Port = ":3000"
 	}
+
 	engine := gin.Default()
 	//engine.LoadHTMLGlob("templates/*.html")
 	if gin.Mode() == "release" {
@@ -34,13 +36,14 @@ func main() {
 		gin.DefaultWriter = f
 		engine.Use(gin.LoggerWithWriter(f))
 	}
+
 	engine.HTMLRender = createRender()
 	engine.Static("/public", "./public")
 	engine.StaticFile("/favicon.ico", "./public/favicon.ico")
 
-	engine.GET("/", web.IndexHandler)
-	engine.GET("/data/:id", web.ProgressHandler)
-	engine.NoRoute(web.NotFoundHandler)
+	engine.GET("/", IndexHandler)
+	engine.GET("/data/:id", ProgressHandler)
+	engine.NoRoute(NotFoundHandler)
 
 	err := engine.Run(Port)
 	if err != nil {

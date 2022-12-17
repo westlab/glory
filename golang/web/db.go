@@ -3,20 +3,21 @@ package web
 import (
 	"database/sql"
 	"fmt"
+	"github.com/westlab/glory/utils"
+	"time"
+
 	"github.com/Songmu/flextime"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/westlab/glory"
-	"time"
 )
 
 func FetchAllHistory(wg string) ([]*ThesisHistoryJoinAuthor, error) {
 	var ret []*ThesisHistoryJoinAuthor
-	db, err := sql.Open("mysql", glory.DataSourceName)
+	db, err := sql.Open("mysql", utils.DataSourceName)
 	if err != nil {
 		return nil, fmt.Errorf("db connection error: %w", err)
 	}
 
-	rows, err := db.Query("SELECT name, char_count, fetch_time FROM thesis_history JOIN author ON author.author_id=thesis_history.author_id WHERE working_group=? and fetch_time <= ? ORDER BY fetch_time", wg, flextime.Now().UTC().Format(glory.TimeFormat))
+	rows, err := db.Query("SELECT name, char_count, fetch_time FROM thesis_history JOIN author ON author.author_id=thesis_history.author_id WHERE working_group=? and fetch_time <= ? ORDER BY fetch_time", wg, flextime.Now().UTC().Format(utils.TimeFormat))
 
 	if err != nil {
 		return nil, fmt.Errorf("db read error: %w", err)
@@ -30,7 +31,7 @@ func FetchAllHistory(wg string) ([]*ThesisHistoryJoinAuthor, error) {
 		if err != nil {
 			return nil, fmt.Errorf("fetch record error: %w", err)
 		}
-		th.FetchTime, err = time.Parse(glory.TimeFormat, ft)
+		th.FetchTime, err = time.Parse(utils.TimeFormat, ft)
 		if err != nil {
 			return nil, fmt.Errorf("convert to time error: %w", err)
 		}

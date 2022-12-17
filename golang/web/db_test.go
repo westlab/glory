@@ -2,19 +2,20 @@ package web
 
 import (
 	"errors"
-	"github.com/google/go-cmp/cmp"
-	"github.com/westlab/glory"
 	"testing"
 	"time"
+
+	"github.com/google/go-cmp/cmp"
+	"github.com/westlab/glory/utils"
 )
 
 func TestFetchAllHistory(t *testing.T) {
-	glory.SetupTest([]string{
-		glory.ExecSQL("./testdata/teardown.sql"),
-		glory.ExecSQL("./testdata/input.sql"),
+	utils.SetupTest([]string{
+		utils.ExecSQL("./testdata/teardown.sql"),
+		utils.ExecSQL("./testdata/input.sql"),
 	})
-	defer glory.TearDown([]string{
-		glory.ExecSQL("./testdata/teardown.sql"),
+	defer utils.TearDown([]string{
+		utils.ExecSQL("./testdata/teardown.sql"),
 	})
 
 	tests := []struct {

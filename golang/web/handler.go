@@ -1,21 +1,22 @@
 package web
 
 import (
-	"github.com/Songmu/flextime"
-	"github.com/gin-gonic/gin"
-	"github.com/westlab/glory"
 	"log"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/Songmu/flextime"
+	"github.com/gin-gonic/gin"
+	"github.com/westlab/glory/utils"
 )
 
-var config *glory.Conf
+var config *utils.Conf
 
 func init() {
 	var err error
-	if config, err = glory.LoadConfig("../config.json"); err != nil {
-		log.Fatalf("load config error: %v", err)
+	if config, err = utils.LoadConfig("../../config.json"); err != nil {
+		log.Fatal(err)
 	}
 }
 
@@ -66,7 +67,7 @@ func calcDeadlines() *map[string]string {
 	ret := map[string]string{}
 	for _, wg := range config.WorkingGroups {
 		var left string
-		deadline, err := time.Parse(glory.DateFormat, wg.Deadline)
+		deadline, err := time.Parse(utils.DateFormat, wg.Deadline)
 		if err != nil {
 			log.Printf("deadline parse error: %v", err)
 			left = "error"

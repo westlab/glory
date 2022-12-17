@@ -1,9 +1,10 @@
 package web
 
 import (
-	"github.com/Songmu/flextime"
-	"github.com/westlab/glory"
 	"time"
+
+	"github.com/Songmu/flextime"
+	"github.com/westlab/glory/utils"
 )
 
 const (
@@ -31,7 +32,7 @@ type AuthorData struct {
 	Color RGB
 }
 
-func NewProgressChart(wg *glory.WorkingGroup, th []*ThesisHistoryJoinAuthor) *ProgressChart {
+func NewProgressChart(wg *utils.WorkingGroup, th []*ThesisHistoryJoinAuthor) *ProgressChart {
 	ret := ProgressChart{
 		Maxi:     defaultMaxi,
 		StepSize: defaultMaxi / steps,
@@ -59,10 +60,10 @@ func NewProgressChart(wg *glory.WorkingGroup, th []*ThesisHistoryJoinAuthor) *Pr
 		for ret.Dates[idx] != toDateStr(t.FetchTime) {
 			idx++
 		}
-    authorNumber, ok := authorIdx[t.Name]
-    if !ok {
-        continue
-    }
+		authorNumber, ok := authorIdx[t.Name]
+		if !ok {
+			continue
+		}
 		ret.AuthorDataList[authorNumber].Data[idx] = t.CharCount
 		if t.CharCount > ret.Maxi {
 			ret.Maxi = t.CharCount
