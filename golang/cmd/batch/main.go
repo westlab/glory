@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	"github.com/westlab/glory/fetchFile"
+	"glory/fetchFile"
 )
 
 func main() {

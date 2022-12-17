@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/westlab/glory/fetchFile"
+	"glory/fetchFile"
 	"log"
 	"os"
 )
