@@ -1,22 +1,21 @@
-
-# credentials
-credentials.json
-token.json
-
-# config
-config.json
-
-# binary
-**/bin/*
-
 # system
-.env
 .DS_STORE
 
 # mysql
 docker/db/data/*
 docker/db/log/
 
-**/log/*
+# web
+golang/web/app/config.json
+golang/web/app/glory
 
+# config
+.env
+config.json
+
+# credentials
+credentials.json
+token.json
+
+**/log/*
 !.gitkeep

@@ -1,20 +1,15 @@
-module glory
+module github.com/westlab/glory
 
 go 1.15
 
 require (
-	github.com/Songmu/flextime v0.1.0 // indirect
-	github.com/gin-contrib/multitemplate v0.0.0-20200916052041-666a7309d230 // indirect
-	github.com/gin-gonic/gin v1.6.3 // indirect
-	github.com/go-playground/validator/v10 v10.4.1 // indirect
-	github.com/go-sql-driver/mysql v1.5.0 // indirect
+	github.com/Songmu/flextime v0.1.0
+	github.com/go-sql-driver/mysql v1.6.0
 	github.com/golang/protobuf v1.4.3 // indirect
-	github.com/json-iterator/go v1.1.10 // indirect
-	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
-	github.com/modern-go/reflect2 v1.0.1 // indirect
-	github.com/ugorji/go v1.2.0 // indirect
-	golang.org/x/crypto v0.0.0-20201124201722-c8d3bf9c5392 // indirect
+	github.com/google/go-cmp v0.5.2
+	github.com/jmoiron/sqlx v1.3.5 // indirect
+	github.com/joho/godotenv v1.4.0 // indirect
+	golang.org/x/oauth2 v0.0.0-20200902213428-5d25da1a8d43
 	golang.org/x/sys v0.0.0-20201130072748-111129e158e2 // indirect
-	google.golang.org/api v0.35.0 // indirect
-	gopkg.in/yaml.v2 v2.4.0 // indirect
+	google.golang.org/api v0.35.0
 )

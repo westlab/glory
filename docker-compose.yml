@@ -1,20 +1,33 @@
 version: '3'
 
 services:
-  db:
-    image: mysql:8.0
-    container_name: mysql_host
+  mysqld:
+    image: mysql:8.0.29
+    container_name: mysqld
     environment: 
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       TZ: 'Asia/Tokyo'
-    ports: 
-      - "3306:3306"
-    volumes: 
+    volumes:
       - ./docker/db/sql:/docker-entrypoint-initdb.d
       - ./docker/db/data:/var/lib/mysql
       - ./docker/db/conf:/etc/mysql/conf.d
       - ./docker/db/log:/var/log/mysql
 
-
+  app:
+    restart: always
+    image: alpine:latest
+    container_name: gloryd
+    depends_on:
+      - mysqld
+    ports:
+      - "8080:8080"
+    environment:
+      DSN: ${DSN}
+      TZ: 'Asia/Tokyo'
+    volumes:
+      - ./golang/web/app:/app
+      - ./config.json:/app/config.json
+    entrypoint:
+      - /app/glory

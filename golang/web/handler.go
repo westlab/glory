@@ -1,4 +1,4 @@
-package web
+package main
 
 import (
 	"log"
@@ -15,7 +15,7 @@ var config *utils.Conf
 
 func init() {
 	var err error
-	if config, err = utils.LoadConfig("../../config.json"); err != nil {
+	if config, err = utils.LoadConfig("/app/config.json"); err != nil {
 		log.Fatal(err)
 	}
 }

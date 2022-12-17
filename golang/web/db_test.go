@@ -1,4 +1,4 @@
-package web
+package main
 
 import (
 	"errors"
@@ -12,7 +12,7 @@ import (
 func TestFetchAllHistory(t *testing.T) {
 	utils.SetupTest([]string{
 		utils.ExecSQL("./testdata/teardown.sql"),
-		utils.ExecSQL("./testdata/input.sql"),
+		utils.ExecSQL("./testdata/03_input.sql"),
 	})
 	defer utils.TearDown([]string{
 		utils.ExecSQL("./testdata/teardown.sql"),

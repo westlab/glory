@@ -1,4 +1,4 @@
-package web
+package main
 
 import (
 	"log"
@@ -11,17 +11,23 @@ import (
 
 func createRender() multitemplate.Renderer {
 	r := multitemplate.NewRenderer()
-	r.AddFromFiles("index", "templates/base.html", "templates/index.html")
-	r.AddFromFiles("progress", "templates/base.html", "templates/progress.html")
-	r.AddFromFiles("notFound", "templates/base.html", "templates/404.html")
+	r.AddFromFiles("index", "/app/templates/base.html", "/app/templates/index.html")
+	r.AddFromFiles("progress", "/app/templates/base.html", "/app/templates/progress.html")
+	r.AddFromFiles("notFound", "/app/templates/base.html", "/app/templates/404.html")
 	return r
 }
 
-func StartWebApp() {
+func main() {
+
+	done, err := InitializeDB(os.Getenv("DSN"))
+	if err != nil {
+		log.Fatalf("failed to initialize db: %v", err)
+	}
+	defer done()
 
 	Port := os.Getenv("GLORY_PORT")
 	if Port == "" {
-		Port = ":3000"
+		Port = ":8080"
 	}
 
 	engine := gin.Default()
@@ -45,7 +51,7 @@ func StartWebApp() {
 	engine.GET("/data/:id", ProgressHandler)
 	engine.NoRoute(NotFoundHandler)
 
-	err := engine.Run(Port)
+	err = engine.Run(Port)
 	if err != nil {
 		log.Fatal(err)
 	}
