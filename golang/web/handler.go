@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -8,14 +9,16 @@ import (
 
 	"github.com/Songmu/flextime"
 	"github.com/gin-gonic/gin"
-	"github.com/westlab/glory/utils"
+
+	"github.com/westlab/glory/conifg"
+	"github.com/westlab/glory/db"
 )
 
-var config *utils.Conf
+var config *conifg.Conf
 
 func init() {
 	var err error
-	if config, err = utils.LoadConfig("/app/config.json"); err != nil {
+	if config, err = conifg.LoadConfig("/app/config.json"); err != nil {
 		log.Fatal(err)
 	}
 }
@@ -67,7 +70,7 @@ func calcDeadlines() *map[string]string {
 	ret := map[string]string{}
 	for _, wg := range config.WorkingGroups {
 		var left string
-		deadline, err := time.Parse(utils.DateFormat, wg.Deadline)
+		deadline, err := time.Parse(db.DateFormat, wg.Deadline)
 		if err != nil {
 			log.Printf("deadline parse error: %v", err)
 			left = "error"
@@ -79,4 +82,36 @@ func calcDeadlines() *map[string]string {
 		ret[wg.Describe] = left
 	}
 	return &ret
+}
+
+func FetchAllHistory(wg string) ([]*ThesisHistoryJoinAuthor, error) {
+	var ret []*ThesisHistoryJoinAuthor
+	//db, err := sql.Open("mysql", utils.DataSourceName)
+	//if err != nil {
+	//	return nil, fmt.Errorf("db connection error: %w", err)
+	//}
+
+	//rows, err := db.Query("SELECT name, char_count, fetch_time FROM thesis_history JOIN author ON author.author_id=thesis_history.author_id WHERE working_group=? and fetch_time <= ? ORDER BY fetch_time", wg, flextime.Now().UTC().Format(utils.TimeFormat))
+	rows, _ := db.DB.Query("SELECT name, char_count, fetch_time FROM thesis_history JOIN author ON author.author_id=thesis_history.author_id WHERE working_group=? and fetch_time <= ? ORDER BY fetch_time", wg, flextime.Now().UTC().Format(db.TimeFormat))
+	if db.IsNoRows(rows.Err()) {
+		return nil, nil
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var th ThesisHistoryJoinAuthor
+		var ft string
+		err := rows.Scan(&th.Name, &th.CharCount, &ft)
+		if err != nil {
+			return nil, fmt.Errorf("fetch record error: %w", err)
+		}
+		th.FetchTime, err = time.Parse(db.TimeFormat, ft)
+		if err != nil {
+			return nil, fmt.Errorf("convert to time error: %w", err)
+		}
+		th.FetchTime = th.FetchTime.Local()
+		ret = append(ret, &th)
+	}
+
+	return ret, nil
 }

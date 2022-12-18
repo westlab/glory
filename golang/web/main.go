@@ -7,6 +7,8 @@ import (
 
 	"github.com/gin-contrib/multitemplate"
 	"github.com/gin-gonic/gin"
+
+	"github.com/westlab/glory/db"
 )
 
 func createRender() multitemplate.Renderer {
@@ -19,7 +21,7 @@ func createRender() multitemplate.Renderer {
 
 func main() {
 
-	done, err := InitializeDB(os.Getenv("DSN"))
+	done, err := db.InitializeDB(os.Getenv("DSN"))
 	if err != nil {
 		log.Fatalf("failed to initialize db: %v", err)
 	}

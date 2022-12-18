@@ -8,7 +8,7 @@
 $ make build
 
 $ vi glory_test.sh
-#!/bin/bash
+#!/app/bash
 
 set -eu
 
@@ -16,7 +16,7 @@ export DATA_SOURCE_NAME='{user}:{passwd}@tcp({address}:{port})/{DB_name}'
 export GIN_MODE='release'
 
 cd /path/to/this/directory
-./bin/glory_server &
+./app/glory_server &
 
 $ chmod +x glory_test.sh
 

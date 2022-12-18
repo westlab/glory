@@ -6,7 +6,6 @@ docker/db/data/*
 docker/db/log/
 
 # web
-golang/web/app/config.json
 golang/web/app/glory
 
 # config

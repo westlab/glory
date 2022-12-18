@@ -1,4 +1,4 @@
-package utils
+package conifg
 
 import (
 	"encoding/json"
