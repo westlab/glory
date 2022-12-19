@@ -16,6 +16,7 @@ func InitializeDB(dsn string) (func() error, error) {
 	}
 	return DB.Close, DB.Ping()
 }
+
 func IsNoRows(err error) bool {
 	return err == sql.ErrNoRows
 }

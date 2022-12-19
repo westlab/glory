@@ -17,7 +17,8 @@ services:
 
   app:
     restart: always
-    image: alpine:latest
+#    image: alpine:latest
+    image: ubuntu:latest # bash が必要
     container_name: gloryd
     depends_on:
       - mysqld
@@ -27,7 +28,7 @@ services:
       DSN: ${DSN}
       TZ: 'Asia/Tokyo'
     volumes:
-      - ./golang/web/app:/app
+      - ./golang/app:/app
       - ./config.json:/app/config.json
     entrypoint:
       - /app/glory

@@ -5,8 +5,9 @@
 docker/db/data/*
 docker/db/log/
 
-# web
-golang/web/app/glory
+# app
+golang/app/glory
+golang/app/cmd/count_char
 
 # config
 .env

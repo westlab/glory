@@ -13,13 +13,13 @@ Google Drive File Stream likeに使えるファイルシステムをマウント
 ```shell
 $ make build
 
-$ vi batch.sh
-#!/bin/bash
+$ vi cmd.sh
+#!/app/bash
 set -eu
 
 export DATA_SOURCE_NAME='{user}:{passwd}@tcp({address}:{port})/{DB_name}'
-/usr/bin/cd /home/kenta/go/src/github.com/westlab/glory/countchars
-./bin/countchars >> ./log/log_$(date +\%Y\%m\%d).log 2>&1
+/usr/app/cd /home/kenta/go/src/github.com/westlab/glory/countchars
+./app/countchars >> ./log/log_$(date +\%Y\%m\%d).log 2>&1
 
 $ chmod +x glory_test.sh
 

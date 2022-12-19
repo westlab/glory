@@ -5,7 +5,7 @@ import (
 
 	"github.com/Songmu/flextime"
 
-	"github.com/westlab/glory/conifg"
+	"github.com/westlab/glory/config"
 )
 
 const (
@@ -33,7 +33,7 @@ type AuthorData struct {
 	Color RGB
 }
 
-func NewProgressChart(wg *conifg.WorkingGroup, th []*ThesisHistoryJoinAuthor) *ProgressChart {
+func NewProgressChart(wg *config.WorkingGroup, th []*ThesisHistoryJoinAuthor) *ProgressChart {
 	ret := ProgressChart{
 		Maxi:     defaultMaxi,
 		StepSize: defaultMaxi / steps,

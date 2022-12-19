@@ -1,4 +1,4 @@
-package conifg
+package config
 
 import (
 	"encoding/json"
@@ -14,8 +14,8 @@ type Conf struct {
 type WorkingGroup struct {
 	Title    string   `json:"title"`
 	Describe string   `json:"describe"`
-	Deadline string   `json:"Deadline"`
-	DirID    string   `json:"dir"`
+	Deadline string   `json:"deadline"`
+	DirName  string   `json:"dir"`
 	Members  []string `json:"members"`
 }
 

@@ -10,15 +10,15 @@ import (
 	"github.com/Songmu/flextime"
 	"github.com/gin-gonic/gin"
 
-	"github.com/westlab/glory/conifg"
+	"github.com/westlab/glory/config"
 	"github.com/westlab/glory/db"
 )
 
-var config *conifg.Conf
+var gloryConfig *config.Conf
 
 func init() {
 	var err error
-	if config, err = conifg.LoadConfig("/app/config.json"); err != nil {
+	if gloryConfig, err = config.LoadConfig("/app/config.json"); err != nil {
 		log.Fatal(err)
 	}
 }
@@ -33,7 +33,7 @@ func IndexHandler(ctx *gin.Context) {
 
 func ProgressHandler(ctx *gin.Context) {
 	id := ctx.Param("id")
-	for _, wg := range config.WorkingGroups {
+	for _, wg := range gloryConfig.WorkingGroups {
 		if id == wg.Title {
 			th, err := FetchAllHistory(id)
 			if err != nil {
@@ -60,7 +60,7 @@ func NotFoundHandler(ctx *gin.Context) {
 
 func getWorkingGroup() *[]string {
 	var ret []string
-	for _, wg := range config.WorkingGroups {
+	for _, wg := range gloryConfig.WorkingGroups {
 		ret = append(ret, wg.Title)
 	}
 	return &ret
@@ -68,7 +68,7 @@ func getWorkingGroup() *[]string {
 
 func calcDeadlines() *map[string]string {
 	ret := map[string]string{}
-	for _, wg := range config.WorkingGroups {
+	for _, wg := range gloryConfig.WorkingGroups {
 		var left string
 		deadline, err := time.Parse(db.DateFormat, wg.Deadline)
 		if err != nil {
@@ -86,12 +86,7 @@ func calcDeadlines() *map[string]string {
 
 func FetchAllHistory(wg string) ([]*ThesisHistoryJoinAuthor, error) {
 	var ret []*ThesisHistoryJoinAuthor
-	//db, err := sql.Open("mysql", utils.DataSourceName)
-	//if err != nil {
-	//	return nil, fmt.Errorf("db connection error: %w", err)
-	//}
 
-	//rows, err := db.Query("SELECT name, char_count, fetch_time FROM thesis_history JOIN author ON author.author_id=thesis_history.author_id WHERE working_group=? and fetch_time <= ? ORDER BY fetch_time", wg, flextime.Now().UTC().Format(utils.TimeFormat))
 	rows, _ := db.DB.Query("SELECT name, char_count, fetch_time FROM thesis_history JOIN author ON author.author_id=thesis_history.author_id WHERE working_group=? and fetch_time <= ? ORDER BY fetch_time", wg, flextime.Now().UTC().Format(db.TimeFormat))
 	if db.IsNoRows(rows.Err()) {
 		return nil, nil
