@@ -29,6 +29,7 @@ services:
       TZ: 'Asia/Tokyo'
     volumes:
       - ./golang/app:/app
+      - ./mnt:/app/mnt
       - ./config.json:/app/config.json
     entrypoint:
       - /app/glory

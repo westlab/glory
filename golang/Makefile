@@ -1,5 +1,5 @@
 GOOS ?= linux
-GOARCH ?= arm64 # amd64
+GOARCH ?= amd64
 
 ROOT_PACKAGE := github.com/westlab/glory
 SRC := $(shell find . -type f -name '*.go' -not -path './vendor/')
