@@ -10,28 +10,39 @@ go1.15.5
 ## ディレクトリ構成
 ```
 glory/          # 設定や、定数などの情報
-  ├ countChars/ # Docxの文字数をカウントする
+  ├ golang      # golang のソースコード
+  ├ assets/     # 図とか
   ├ docker/     # dockerの設定
-  ├ fetchFile/ (old) # docxファイルを取得し、文字数を計算し、DBに登録する処理(Google APIが上手く取得できなかったため、使用しない予定)
   └ web/        # HTTPサーバ
 ```
 
 ## 使い方
-**各ディレクトリにあるREADMEも参考にしてください**
 
-`config.json`で設定する。設定方法は`confgi_sample.json`を参照。`dir`は論文があるディレクトリを指定する。
+1. 設定ファイルの記述
+   1. `config.json` で設定する. 設定方法は `config.json.tmpl` を参照。 `dir` は論文があるディレクトリを指定する.
+   2. `.env.tmpl`  を参考に `.env`を作り, `MYSQL_ROOT_PASSWORD`, `MYSQL_USER`, `MYSQL_PASSWORD`, `DSN` を設定する.
+   3. `Makefile` の `APP_HOST` の値を glory を稼働させるサーバに設定する．このサーバは ~/.ssh/config の Name である.
 
-`.env`を作り、`MYSQL_ROOT_PASSWORD`, `MYSQL_USER`, `MYSQL_PASSWORD`を設定する。
+2. プログラムのビルド，デプロイ
+   1. golang/ において
+       ```
+      $ make build
+       ```
+   2. / において
+       ```
+      $ make deploy_full
+       ```
 
-```
-$ docker-compose up -d
+3. プログラムの稼働
+   1. glory が稼働する予定のサーバの /opt/glory で
+       ```
+      $ docker-compose up -d
+       ```
 
-// mysqlに入りユーザにテーブルの操作権限を与えるなどしてください
+4. データ取得の設定 
+   1. `google-drive-ocamlfuse` を使用して GoogleDrive のそれぞれのディレクトを `/opt/glory/mnt/b4`, `/opt/glory/mnt/m2` にマウントする．
+   2. glory が稼働する予定のサーバで crontab を編集し，定期的に /opt/glory/bin/count_char が実行されるようにする
 
-// fetchFile/ web/において
-$ make build
-
-```
 
 ## 画面例
 ![進捗グラフ表示例](assets/screenshot.png)
