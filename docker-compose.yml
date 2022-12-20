@@ -1,20 +1,37 @@
 version: '3'
 
 services:
-  db:
-    image: mysql:5.7
-    container_name: mysql_host
+  mysqld:
+    image: mysql:8.0.29
+    container_name: mysqld
     environment: 
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       TZ: 'Asia/Tokyo'
-    ports: 
-      - 3306:3306
-    volumes: 
+    ports:
+      - "3306:3306"
+    volumes:
       - ./docker/db/sql:/docker-entrypoint-initdb.d
       - ./docker/db/data:/var/lib/mysql
       - ./docker/db/conf:/etc/mysql/conf.d
       - ./docker/db/log:/var/log/mysql
 
-
+  app:
+    restart: always
+#    image: alpine:latest
+    image: ubuntu:latest # bash が必要
+    container_name: gloryd
+    depends_on:
+      - mysqld
+    ports:
+      - "8080:8080"
+      - "80:80"
+    environment:
+      DSN: ${DSN}
+      GLORY_PORT: ${GLORY_PORT}
+      TZ: 'Asia/Tokyo'
+    volumes:
+      - ./app:/app
+    entrypoint:
+      - /app/glory

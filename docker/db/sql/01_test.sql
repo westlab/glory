@@ -1,4 +1,4 @@
-DROP DATABASE IF EXISTS glory;
+DROP DATABASE IF EXISTS glory_test;
 CREATE DATABASE IF NOT EXISTS glory_test;
 USE glory_test;
 
@@ -19,3 +19,5 @@ CREATE TABLE thesis_history (
   fetch_time DATETIME(3) NOT NULL,
   CONSTRAINT fk_author_id FOREIGN KEY (author_id) REFERENCES author (author_id) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=INNODB DEFAULT CHARSET=utf8;
+
+GRANT ALL PRIVILEGES ON *.* TO 'westlab'@'%';

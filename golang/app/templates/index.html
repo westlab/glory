@@ -1,0 +1,23 @@
+{{define "title"}} glory {{end}}
+
+{{define "content"}}
+    <h1>Glory</h1>
+        <p class="lead">
+            学位論文の進捗状況を表示します
+        </p>
+        <div class="row pb-5">
+        <ul>
+            {{range $k, $v := .deadlines}}
+                <li>{{$k}}の締め切りまであと<span class="font-weight-bold text-danger">{{$v}}日</span></li>
+            {{end}}
+        </ul>
+        </div>
+        <div class="card">
+            <h5 class="card-header">論文ファイルの置き場について</h5>
+            <div class="card-body">
+                B4の方は<mark>/PUB-KEIO/B4卒論2022/{name}/</mark>に、<br>
+                M2の方は<mark>/PUB-KEIO/M2修論発表2022/{name}/</mark>にファイルをおいてください。<br>
+                最新のdocxファイルをカウントします。
+            </div>
+        </div>
+{{end}}

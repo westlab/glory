@@ -1,22 +1,21 @@
+# system
+.DS_STORE
+.idea
+!.gitkeep
+
+# docker
+docker/db/data/*
+docker/db/log/
+**/log/*
+
+# app
+golang/app/glory
+golang/cmd/bin/count_char
+
+# config
+.env
+config.json
 
 # credentials
 credentials.json
 token.json
-
-# config
-config.json
-
-# binary
-**/bin/*
-
-# system
-.env
-.DS_STORE
-
-# mysql
-docker/db/data/*
-docker/db/log/
-
-**/log/*
-
-!.gitkeep
