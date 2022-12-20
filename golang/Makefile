@@ -2,10 +2,10 @@ GOOS ?= linux
 GOARCH ?= amd64
 
 ROOT_PACKAGE := github.com/westlab/glory
-SRC := $(shell find . -type f -name '*.go' -not -path './vendor/')
+SRC := $(shell find . -type f -name '*.go' -not -path './vendor/*')
 
 GLORY_BIN := ./app/glory
-COUNT_CHAR_BIN := ./app/cmd/count_char
+COUNT_CHAR_BIN := ./cmd/bin/count_char
 
 .PHONY: all
 all: $(GLORY_BIN) $(COUNT_CHAR_BIN)

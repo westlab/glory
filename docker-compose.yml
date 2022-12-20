@@ -9,6 +9,8 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       TZ: 'Asia/Tokyo'
+    ports:
+      - "3306:3306"
     volumes:
       - ./docker/db/sql:/docker-entrypoint-initdb.d
       - ./docker/db/data:/var/lib/mysql
@@ -28,8 +30,6 @@ services:
       DSN: ${DSN}
       TZ: 'Asia/Tokyo'
     volumes:
-      - ./golang/app:/app
-      - ./mnt:/app/mnt
-      - ./config.json:/app/config.json
+      - ./app:/app
     entrypoint:
       - /app/glory

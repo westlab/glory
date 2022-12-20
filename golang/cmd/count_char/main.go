@@ -1,32 +1,33 @@
 package main
 
 import (
+	"github.com/Songmu/flextime"
+	"github.com/joho/godotenv"
+	"github.com/westlab/glory/config"
+	"github.com/westlab/glory/db"
 	"log"
 	"os"
-	"os/exec"
-	"strconv"
-	"strings"
-	"time"
-
-	"github.com/Songmu/flextime"
-	"github.com/westlab/glory/config"
-
-	"github.com/westlab/glory/db"
 )
 
 func main() {
 
-	log.Print("Start countChar process")
+	log.Print("[INFO] Start countChar process")
 
-	done, err := db.InitializeDB(os.Getenv("DSN"))
+	envFile := "/opt/glory/.env"
+	err := godotenv.Load(envFile)
 	if err != nil {
-		log.Fatalf("Failed to initialize db: %v", err)
+		log.Fatalf("[ERROR] Failed to load .env '%s' : %v", envFile, err)
+	}
+
+	done, err := db.InitializeDB(os.Getenv("COUNT_CHAR_DSN"))
+	if err != nil {
+		log.Fatalf("[ERROR] Failed to initialize db: %v", err)
 	}
 	defer done()
 
-	gloryConfig, err := config.LoadConfig("/app/config.json")
+	gloryConfig, err := config.LoadConfig("/opt/glory/config.json")
 	if err != nil {
-		log.Fatalf("Failed to load config: %v", err)
+		log.Fatalf("[ERROR] Failed to load config: %v", err)
 	}
 
 	// 最終更新日の取得(決め打ち)
@@ -34,46 +35,41 @@ func main() {
 	for _, wg := range gloryConfig.WorkingGroups {
 
 		if wg.DirName == "" {
-			log.Printf("WG %s does not have dir_name, skip", wg.Title)
+			log.Printf("[INFO] WG %s does not have dir_name, skip", wg.Title)
 			continue
 		}
 
 		for _, m := range wg.Members {
 
 			dirPath := wg.DirName + "/" + m
-			log.Printf("start fetch latest file from %s", dirPath)
+			log.Printf("[INFO] Start FetchLatestDocx from %s", dirPath)
 
-			status, err := exec.Command("/app/cmd/fetch_latest_file.bash", dirPath).Output()
-			if err != nil {
-				log.Fatalf("fetch latest file error: %v", err)
-			}
-
-			if strings.Contains(string(status), "no docx file") {
-				log.Printf("No docx file in %s, skip", dirPath)
+			latestDocx, err := FetchLatestDocx(dirPath)
+			if err == NoDocxError {
+				log.Printf("[INFO] No docx file in %s, skip", dirPath)
 				continue
+			} else if err != nil {
+				log.Fatalf("[ERROR] FetchLatestDocx failed in '%s'", dirPath)
 			}
 
-			data := strings.Split(string(status), "\n")
-			count, err := strconv.ParseInt(data[2], 10, 64)
-			if err != nil {
-				log.Fatalf("count char error: %v", err)
-			}
+			log.Printf("[INFO] %s's latest docx file is %s modified at %s", m, latestDocx, t)
 
 			authorID, err := calcAuthorID(m, wg.Title)
 			if err != nil {
-				log.Fatalf("calc author id error: %v", err)
+				log.Fatalf("[ERROR] calcAuthorID failed: %v", err)
 			}
 
-			lastMod, err := time.Parse(time.RFC3339Nano, data[1])
+			count, modified, err := CountCharsInDocx(latestDocx)
 			if err != nil {
-				log.Fatalf("last mod time parse error: %v", err)
+				log.Fatalf("[ERROR] CountCharsInDocx failed with '%s': %v", latestDocx, err)
 			}
-			log.Printf("member: %s, updateTime: %v, ", m, lastMod)
 
-			err = CreateThesisHistory(authorID, count, lastMod.UTC().Format(db.TimeFormat), t.UTC().Format(db.TimeFormat))
+			err = CreateThesisHistory(authorID, int64(count), modified.UTC().Format(db.TimeFormat), t.UTC().Format(db.TimeFormat))
 			if err != nil {
-				log.Fatalf("insert thesis history error: %v", err)
+				log.Fatalf("[ERROR] insert thesis history error: %v", err)
 			}
+
+			log.Printf("[INFO] member: %s, updateTime: %v, numChar: %d", m, modified, count)
 
 		}
 	}
