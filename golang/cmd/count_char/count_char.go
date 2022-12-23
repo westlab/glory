@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-	"os/exec"
 	"path/filepath"
-	"strconv"
 	"strings"
 	"time"
+
+	"code.sajari.com/docconv"
 )
 
 var NoDocxError = errors.New("no docx file")
@@ -74,25 +74,26 @@ func CountCharsInDocx(filePath string) (int, time.Time, error) {
 		return -1, time.Time{}, fmt.Errorf("%s is not docx file", filePath)
 	}
 
-	cmdStr1 := "unzip -p "
-	cmdStr2 := " word/document.xml | xmllint --format - | grep -E '<w:t[\"-~\\ ]*?>'| sed -E 's/<\\/?w:t[\"-=\\?-~\\ ]*>//g'| tr -d '\\r' | tr -d '\\n' | sed -E 's/\\ {2,}//g' | sed -E 's/&(gt|lt);/@/g'| tr -d ' ' |tr -d ' 　' | wc -m | tr -d ' '"
-	cmdRes, err := exec.Command("sh", "-c", cmdStr1+filePath+cmdStr2).Output()
-	if err != nil {
-		return -1, time.Time{}, err
-	}
-
-	countStr := string(cmdRes)
-	countStr = strings.Replace(countStr, "\n", "", -1)
-	count, err := strconv.Atoi(countStr)
-	if err != nil {
-		return -1, time.Time{}, err
-	}
-
+	// get last modified time
 	file, err := os.Stat(filePath)
 	if err != nil {
 		return -1, time.Time{}, err
 	}
 	modified := file.ModTime()
+
+	// get count char
+	f, err := os.Open(filePath)
+	if err != nil {
+		return -1, time.Time{}, fmt.Errorf("fail to open file: %v", err)
+	}
+	defer f.Close()
+	document, _, err := docconv.ConvertDocx(f)
+	if err != nil {
+		return -1, time.Time{}, err
+	}
+	document = strings.ReplaceAll(document, " ", "")
+	document = strings.ReplaceAll(document, "\n", "")
+	count := strings.Count(document, "")
 
 	return count, modified, nil
 }
