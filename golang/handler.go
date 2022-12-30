@@ -18,7 +18,7 @@ var gloryConfig *config.Conf
 
 func init() {
 	var err error
-	if gloryConfig, err = config.LoadConfig("/app/config.json"); err != nil {
+	if gloryConfig, err = config.LoadConfig("./config.json"); err != nil {
 		log.Fatal(err)
 	}
 }

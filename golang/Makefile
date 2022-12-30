@@ -1,11 +1,11 @@
 GOOS ?= linux # {linux, darwin, windows}
-GOARCH ?= amd64 # {amd64, arm64}
+GOARCH ?= arm64 # {amd64, arm64}
 
 ROOT_PACKAGE := github.com/westlab/glory
 SRC := $(shell find . -type f -name '*.go' -not -path './vendor/*')
 
-GLORY_BIN := ./app/glory
-COUNT_CHAR_BIN := ./cmd/bin/count_char
+GLORY_BIN := ../docker/app/glory
+COUNT_CHAR_BIN := ../cmd/count_char
 
 .PHONY: all
 all: $(GLORY_BIN) $(COUNT_CHAR_BIN)
