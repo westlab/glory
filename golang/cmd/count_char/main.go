@@ -26,7 +26,7 @@ func main() {
 	}
 	defer done()
 
-	gloryConfig, err := config.LoadConfig("./config.json")
+	gloryConfig, err := config.LoadConfig("/opt/glory/cmd/config.json")
 	if err != nil {
 		log.Fatalf("[ERROR] Failed to load config: %v", err)
 	}
