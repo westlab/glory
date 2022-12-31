@@ -1,20 +1,16 @@
 # system
 .DS_STORE
 .idea
-!cmd
+
+# docker
+**/log/*
 
 # db
 docker/db/data/*
 docker/db/log/
-**/log/*
 
 # app
 docker/app/glory
-
-## cmd
-#cmd/*
-#!/cmd/.gitkeep
-
 
 # config
 .env

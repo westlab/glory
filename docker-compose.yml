@@ -29,8 +29,10 @@ services:
     environment:
       DSN: ${DSN}
       GLORY_PORT: ${GLORY_PORT}
+      GIN_MODE: ${GIN_MODE}
       TZ: 'Asia/Tokyo'
     volumes:
       - ./docker/app:/app
+      - ./docker/app/log:/app/log
     entrypoint:
       - /app/glory
