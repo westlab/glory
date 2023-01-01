@@ -200,7 +200,8 @@ func makeDates(start time.Time) []string {
 func FetchRanking(wgTitle string) ([]*RankingRow, error) {
 	var ret []*RankingRow
 
-	query := `SELECT b.name, a.char_count
+	query := `SELECT b.name, a.char_count,
+		    ROW_NUMBER() OVER(ORDER BY a.char_count DESC)
 		FROM (
 		    SELECT
 		        author_id,
@@ -223,7 +224,7 @@ func FetchRanking(wgTitle string) ([]*RankingRow, error) {
 	for rows.Next() {
 
 		var th RankingRow
-		err := rows.Scan(&th.Name, &th.CharCount)
+		err := rows.Scan(&th.Name, &th.CharCount, &th.Rank)
 		if err != nil {
 			return nil, fmt.Errorf("fetch record error: %w", err)
 		}
