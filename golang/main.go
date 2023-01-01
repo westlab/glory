@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/westlab/glory/config"
 	"log"
 	"os"
 	"time"
@@ -10,6 +11,31 @@ import (
 
 	"github.com/westlab/glory/db"
 )
+
+var (
+	GloryConfig *config.Conf
+	dsn         string
+	port        string
+)
+
+func init() {
+
+	var err error
+	if GloryConfig, err = config.LoadConfig("/app/config.json"); err != nil {
+		log.Fatal(err)
+	}
+
+	dsn = os.Getenv("DSN")
+	if dsn == "" {
+		log.Fatal("environment variables: DSN is not defined")
+	}
+
+	port = os.Getenv("GLORY_PORT")
+	if port == "" {
+		port = ":8080"
+	}
+
+}
 
 func createRender() multitemplate.Renderer {
 	r := multitemplate.NewRenderer()
@@ -21,24 +47,19 @@ func createRender() multitemplate.Renderer {
 
 func main() {
 
-	done, err := db.InitializeDB(os.Getenv("DSN"))
+	done, err := db.InitializeDB(dsn)
 	if err != nil {
 		log.Fatalf("failed to initialize db: %v", err)
 	}
 	defer done()
 
-	Port := os.Getenv("GLORY_PORT")
-	if Port == "" {
-		Port = ":8080"
-	}
-
 	engine := gin.Default()
 	//engine.LoadHTMLGlob("templates/*.html")
 	if gin.Mode() == "release" {
-		logFile := "log/glory_log_" + time.Now().Format(time.RFC3339) + ".log"
+		logFile := "/app/log/glory_log_" + time.Now().Format(time.RFC3339) + ".log"
 		f, err := os.Create(logFile)
 		if err != nil {
-			log.Fatalf("log file %s is invalid", logFile)
+			log.Fatalf("log file '%s' is invalid: %v", logFile, err)
 		}
 		gin.DefaultErrorWriter = f
 		gin.DefaultWriter = f
@@ -53,7 +74,7 @@ func main() {
 	engine.GET("/data/:id", ProgressHandler)
 	engine.NoRoute(NotFoundHandler)
 
-	err = engine.Run(Port)
+	err = engine.Run(port)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -11,6 +11,7 @@ require (
 	github.com/jmoiron/sqlx v1.3.5
 	github.com/joho/godotenv v1.4.0 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
+	github.com/pkg/profile v1.7.0 // indirect
 	golang.org/x/oauth2 v0.3.0 // indirect
 	google.golang.org/api v0.105.0 // indirect
 )

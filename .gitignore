@@ -1,21 +1,15 @@
 # system
 .DS_STORE
 .idea
-!.gitkeep
 
 # docker
-docker/db/data/*
-docker/db/log/
 **/log/*
+docker/db/data
+docker/app/glory
 
-# app
-golang/app/glory
-golang/cmd/bin/count_char
+# cmd
+cmd/*
 
 # config
 .env
 config.json
-
-# credentials
-credentials.json
-token.json

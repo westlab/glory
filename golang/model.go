@@ -2,10 +2,6 @@ package main
 
 import (
 	"time"
-
-	"github.com/Songmu/flextime"
-
-	"github.com/westlab/glory/config"
 )
 
 const (
@@ -33,80 +29,10 @@ type AuthorData struct {
 	Color RGB
 }
 
-func NewProgressChart(wg *config.WorkingGroup, th []*ThesisHistoryJoinAuthor) *ProgressChart {
-	ret := ProgressChart{
-		Maxi:     defaultMaxi,
-		StepSize: defaultMaxi / steps,
-	}
-	authorIdx := map[string]int{}
-	for i, v := range wg.Members {
-		author := AuthorData{
-			Name:  v,
-			Color: colors[i%len(colors)],
-		}
-		ret.AuthorDataList = append(ret.AuthorDataList, &author)
-		authorIdx[v] = i
-	}
-	if len(th) == 0 {
-		ret.Dates = []string{toDateStr(flextime.Now().AddDate(0, 0, -1)),
-			toDateStr(flextime.Now())}
-		return &ret
-	}
-	ret.Dates = makeDates(th[0].FetchTime.AddDate(0, 0, -1))
-	for _, v := range ret.AuthorDataList {
-		v.Data = make([]int, len(ret.Dates))
-	}
-	idx := 1
-	for _, t := range th {
-		for ret.Dates[idx] != toDateStr(t.FetchTime) {
-			idx++
-		}
-		authorNumber, ok := authorIdx[t.Name]
-		if !ok {
-			continue
-		}
-		ret.AuthorDataList[authorNumber].Data[idx] = t.CharCount
-		if t.CharCount > ret.Maxi {
-			ret.Maxi = t.CharCount
-		}
-	}
-	for _, author := range ret.AuthorDataList {
-		for i := 1; i < len(ret.Dates); i++ {
-			if author.Data[i] == 0 {
-				author.Data[i] = author.Data[i-1]
-			}
-		}
-	}
-	ret.Maxi = fixMaxi(ret.Maxi)
-	ret.StepSize = ret.Maxi / steps
-
-	return &ret
-}
-
-func toDateStr(t time.Time) string {
-	return t.Format(dateFormat)
-}
-
-func fixMaxi(m int) int {
-	ret := int(float64(m) * 1.1)
-	for ret >= 10 {
-		ret /= 10
-	}
-	ret++
-	for ret <= m {
-		ret *= 10
-	}
-	return ret
-}
-
-func makeDates(start time.Time) []string {
-	var ret []string
-	d := start
-	for d.Before(flextime.Now().AddDate(0, 0, 1)) {
-		ret = append(ret, toDateStr(d))
-		d = d.AddDate(0, 0, 1)
-	}
-	return ret
+type RankingRow struct {
+	Rank      int
+	Name      string
+	CharCount int
 }
 
 type RGB struct {

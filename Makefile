@@ -4,33 +4,28 @@ APP_DIR := /opt/glory
 .PHONY: all
 all:
 	docker-compose down
-	rm -f golang/app/config.json
-	cp config.json golang/app/config.json
+	rm -f ./docker/app/config.json
+	cp ./config.json ./docker/app/config.json
 	docker-compose up -d
 
 .PHONY: clean
 clean:
 	docker-compose down
+	rm -f ./docker/app/config.json
 
-.PHONY: exec_mysqld
-exec_mysqld:
-	docker exec -it mysqld /bin/bash
+.PHONY: deploy_cmd
+deploy_cmd:
+	cp ./config.json ./cmd/config.json
+	scp -r ./cmd $(APP_HOST):$(APP_DIR)
 
-.PHONY: exec_gloryd
-exec_gloryd:
-	docker exec -it gloryd /bin/bash
-
-.PHONY: deploy_bin
-deploy_bin:
-	scp -r ./golang/cmd/bin $(APP_HOST):$(APP_DIR)
+.PHONY: deploy_app
+deploy_app:
+	scp -r ./docker/app/glory $(APP_HOST):$(APP_DIR)/docker/app/glory
 
 .PHONY: deploy_full
 deploy_full:
-	rm -f golang/app/config.json
-	cp config.json golang/app/config.json
-	scp -r ./docker $(APP_HOST):$(APP_DIR)
-	scp -r ./golang/app $(APP_HOST):$(APP_DIR)
-	scp -r ./golang/cmd/bin $(APP_HOST):$(APP_DIR)
-	scp ./.env $(APP_HOST):$(APP_DIR)
-	scp ./config.json $(APP_HOST):$(APP_DIR)
-	scp ./docker-compose.yml $(APP_HOST):$(APP_DIR)
+	rm -f ./docker/app/config.json ./bin/config.json
+	cp ./config.json ./docker/app/config.json
+	cp ./config.json ./cmd/config.json
+	rm -rf ./docker/db/data .docker/db/log
+	scp -r ./docker ./cmd ./.env ./docker-compose.yml $(APP_HOST):$(APP_DIR)

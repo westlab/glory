@@ -24,7 +24,7 @@ glory/          # 設定や、定数などの情報
 1. 設定ファイルの記述
    1. `config.json` で設定する. 設定方法は `config.json.tmpl` を参照。 `dir` は論文があるディレクトリを指定する.
    2. `.env.tmpl`  を参考に `.env`を作り, `MYSQL_ROOT_PASSWORD`, `MYSQL_USER`, `MYSQL_PASSWORD`, `DSN` を設定する.
-   3. `Makefile` の `APP_HOST` の値を glory を稼働させるサーバに設定する．このサーバは ~/.ssh/config の Name である.
+   3. `/Makefile` の `APP_HOST` の値を glory を稼働させるサーバに設定する．このサーバは ~/.ssh/config の Name である.
 
 2. プログラムのビルド，デプロイ
    1. golang/ において
@@ -37,7 +37,7 @@ glory/          # 設定や、定数などの情報
        ```
 
 3. プログラムの稼働
-   1. glory が稼働する予定のサーバの /opt/glory で
+   1. glory が稼働する予定のサーバの /opt/glory で以下のコマンドを実行することで DB, Web サーバ用のコンテナが立ち上がる.
        ```
       $ docker-compose up -d
        ```

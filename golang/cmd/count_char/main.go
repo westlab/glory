@@ -1,12 +1,13 @@
 package main
 
 import (
+	"log"
+	"os"
+
 	"github.com/Songmu/flextime"
 	"github.com/joho/godotenv"
 	"github.com/westlab/glory/config"
 	"github.com/westlab/glory/db"
-	"log"
-	"os"
 )
 
 func main() {
@@ -25,7 +26,7 @@ func main() {
 	}
 	defer done()
 
-	gloryConfig, err := config.LoadConfig("/opt/glory/config.json")
+	gloryConfig, err := config.LoadConfig("/opt/glory/cmd/config.json")
 	if err != nil {
 		log.Fatalf("[ERROR] Failed to load config: %v", err)
 	}

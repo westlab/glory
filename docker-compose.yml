@@ -19,8 +19,7 @@ services:
 
   app:
     restart: always
-#    image: alpine:latest
-    image: ubuntu:latest # bash が必要
+    image: alpine:latest
     container_name: gloryd
     depends_on:
       - mysqld
@@ -30,8 +29,10 @@ services:
     environment:
       DSN: ${DSN}
       GLORY_PORT: ${GLORY_PORT}
+      GIN_MODE: ${GIN_MODE}
       TZ: 'Asia/Tokyo'
     volumes:
-      - ./app:/app
+      - ./docker/app:/app
+      - ./docker/app/log:/app/log
     entrypoint:
       - /app/glory

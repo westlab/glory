@@ -23,7 +23,7 @@
                                 ],
                                 lineTension: 0,
                                 borderColor: "rgba({{.Color.R}},{{.Color.G}},{{.Color.B}},1)",
-                                backgroundColor: "rgba(0,0,0,0)"
+                                backgroundColor: "rgba(0,0,0,0)",
                             },
                             {{end}}
                         ],
@@ -59,6 +59,32 @@
         </div>
         <div class="col-lg-2">
             ランキング(TBD)
+            <table border="0" id="ranking_table">
+                <tr>
+                    <th>順位</th>
+                    <th>名前</th>
+                    <th>文字数</th>
+                </tr>
+            </table>
+            <script>
+                let tbl = document.getElementById("ranking_table");
+                const ranking = {{.ranking}};
+                ranking.forEach(row => {
+                    let tr = document.createElement('tr');
+
+                    let tdRank = document.createElement('td');
+                    tdRank.innerHTML = row.Rank;
+                    tr.appendChild(tdRank);
+                    let tdName = document.createElement('td');
+                    tdName.innerHTML = row.Name;
+                    tr.appendChild(tdName);
+                    let tdCount = document.createElement('td');
+                    tdCount.innerHTML = row.CharCount;
+                    tr.appendChild(tdCount);
+
+                    tbl.appendChild(tr);
+                });
+            </script>
         </div>
     </div>
 {{end}}
