@@ -4,13 +4,11 @@
 
 # docker
 **/log/*
-
-# db
-docker/db/data/*
-docker/db/log/
-
-# app
+docker/db/data
 docker/app/glory
+
+# cmd
+cmd/*
 
 # config
 .env

@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/westlab/glory/config"
 	"log"
 	"net/http"
 	"strconv"
@@ -11,6 +10,7 @@ import (
 	"github.com/Songmu/flextime"
 	"github.com/gin-gonic/gin"
 
+	"github.com/westlab/glory/config"
 	"github.com/westlab/glory/db"
 )
 
