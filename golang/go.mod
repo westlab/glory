@@ -1,6 +1,6 @@
 module github.com/westlab/glory
 
-go 1.15
+go 1.19
 
 require (
 	code.sajari.com/docconv v1.3.5 // indirect
